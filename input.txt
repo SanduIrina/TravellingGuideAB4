@@ -1,0 +1,6 @@
+5
+muzeul_ceasului Republica_Ploiesti ploiesti 20 3 swimming hiking scuba_diving 3 10 5 10
+afi_palace Romania bucuresti 30 2 swimming bungee_jumping 3 10 5 10
+delfinariu Valahia constanta 10 3 roller_skating fishing surfing 3 10 5 10
+PSC Republica_Ploiesti ploiesti 70 2 bungee_jumping swimming 3 10 5 10
+plaza Romania bucuresti 90 3 hiking horse_riding fishing 3 10 5 10
