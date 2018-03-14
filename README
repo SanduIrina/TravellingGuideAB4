@@ -1,0 +1,63 @@
+<=============================================================================>
+|							  TRAVELLING GUIDE                                |
+|								   AB4 App								      |
+|							  Sandu Maria Irina								  |
+<=============================================================================>
+
+- CLASS DESCRIPTION -
+
+Dialogue: This class contains lenghty messages so I don't overload the main 
+program too much;
+
+PriceComparator: This class is a comparator used to sort destinations based on 
+the average price/day;
+
+Main: In the beggining of the program I create an array of Destination-type 
+objects which will contain all destinations and their stats(name, city, etc);
+	Alongside this ArrayList I have two more ArrayLists (LiteralCity and 
+LiteralCountry) which are only used for printing the entire lists of cities and
+countries. This is necessary because the user must insert the names exactly as
+they are written in the list(just a little bit of user-proofing :) ).
+ 	I also declare two HashMaps: 
+-Cities, which contains all city names mapped with lists of all destinations 
+available in each city;
+-Countries, which will contain all country names mapped with a list of all 
+cities in each country as strings;
+
+This way of storing data allows for code extension. If i want to add another 
+level in the hierarchy, lets say continent, all I have to do is create another
+HashMap of Strings and in the moment of reading data, I must add all countries 
+to their corresponding continents. By using a HashMap, when I'm searching for a 
+destination in a certain continent I can get all the countries(and then cities)
+from that respective continent in O(1 + no_of_countries * no_of_cities), rather
+than O(no_of_continents * no_of_countries * no_of_cities);
+
+After this process, I start interracting with the user by listing all available
+ options and asking for input. Based on what input I receive one of the
+ follwing will take place:
+1. I itterate through my list of destinations and when I find the one the user 
+requested I print it's stats;
+2. I ask the user for filtering options(city/country/visiting dates) and I 
+apply these options to my list of destinations( getting the destinations from 
+a certain city/country is not costly due to the HashMaps). After that I sort 
+the resulting list using the comparator described earlier and print top 5 
+locations.
+3. I iterate through the list of destinations and I add to a list the ones 
+where the requested activity is available.
+4. The program is running continuously until the user is done. When the input 
+is 4, the program exits gracefully.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
