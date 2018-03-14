@@ -1,0 +1,22 @@
+21
+disney_land France paris 30 3 singing roller_coasting dancing 1 2 5 10
+louvre France paris 50 2 observing reading 1 6 5 10
+eiffel_tower France paris 50 2 observing proposing 1 6 12 10
+notre_dame France paris 10 2 picture_taking observing 1 6 7 10
+grand_casino USA las_vegas 10 3 gambling playing_poker getting_married 1 7 9 10
+sistine_chapel Vatican vatican_city 70 3 being_amazed sigh-seeing reading 1 8 5 10
+yellowstone_national_park USA wyioming 35 2 swimming hiking 1 9 5 10
+oahu USA honolulu 60 3 swimming snorkeling surfing 1 9 2 10
+glacier_national_park USA montana 40 3 hiking skiing ice-fishing 1 9 11 10
+grand_canyon USA arizona 90 2 rock_climbing sight_seeing 1 9 5 10
+disney_land USA california 50 3 singing roller_coasting dancing 3 5 5 10
+champs_Élysées France paris 12 2 strolling shopping 3 6 5 10
+musee_d'Orsay France paris 45 2 sigh-seeing admiring_paintings 1 6 5 10
+opera_house France paris 60 2 listening_to_opera watching_plays 3 6 8 10
+grand_casino2 USA las_vegas 65 3 gambling playing_poker getting_married 1 7 6 10
+sidney_opera Australia sidney 45 1 listening_to_opera 3 6 5 10
+muzeul_ceasului Romania ploiesti 20 3 swimming hiking scuba_diving 3 5 4 10
+afi_palace Romania bucuresti 30 2 swimming bungee_jumping 1 6 5 10
+delfinariu Romania constanta 10 3 roller_skating fishing surfing 3 7 5 10
+PSC Romania ploiesti 70 2 bungee_jumping swimming 3 8 5 10
+plaza Romania bucuresti 90 3 hiking horse_riding fishing 3 9 5 10

@@ -12,11 +12,14 @@ public class Main {
             FileSystem f = new FileSystem(args[0]," ");
             List<Destination> dest = new ArrayList<Destination>();
             int n = f.nextInt();
+            
             HashMap<String, ArrayList<Destination>> cities = new HashMap<String, ArrayList<Destination>>();
             HashMap<String, ArrayList<String>> countries = new HashMap<String, ArrayList<String>>();
+            
             ArrayList<String> literalCity = new ArrayList<String>();
             ArrayList<String> literalCountry = new ArrayList<String>();
             ArrayList<String> literalActivity = new ArrayList<String>();
+            
             for(int i=0; i<n; i++) {
                 Destination curr = new Destination();
                 curr.setName(f.nextWord());
@@ -64,7 +67,7 @@ public class Main {
             Scanner sc = new Scanner(System.in);
             int option = 0;
             while(option != 4) {
-                System.out.println("Enter option number:");
+                System.out.println("Enter option number(1-4):");
                 option = sc.nextInt();
                 
                 switch(option) {
@@ -141,7 +144,8 @@ public class Main {
                             }
                             Collections.sort(result, new PriceComparator());
                             for(int i=0; i<result.size(); i++) {
-                                System.out.println(result.get(i).getName() + " " +result.get(i).getAvgPrice());
+                                System.out.println("Destination: " + result.get(i).getName() + 
+                                        " with an average price/day of " +result.get(i).getAvgPrice());
                             }
                             break;
                             
@@ -161,10 +165,8 @@ public class Main {
                                 }
                             }
                             Collections.sort(acts,new PriceComparator());
-                            System.out.println("Available destinations:");
-                            for(int i=0; i<acts.size(); i++) {
-                                System.out.println(acts.get(i).getName() + ", " + acts.get(i).getCity());
-                            }
+                            System.out.println("Most price-convenient destination:");
+                            System.out.println(acts.get(0).getName() + ", " + acts.get(0).getCity());                            
                             
                             break;
                     case 4: System.out.println("Goodbye!");

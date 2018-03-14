@@ -1,5 +1,6 @@
 build:
 	javac Main.java
-	java Main input.txt
+run:
+	java Main input1.txt
 clean: 
 	rm *.class
