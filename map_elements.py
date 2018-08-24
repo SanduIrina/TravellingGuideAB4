@@ -77,6 +77,7 @@ class Lane(RoadObject):
         left_boundary.heading = heading
         left_boundary.start_position.x = x
         left_boundary.start_position.y = y
+        left_boundary.s = 0
         return left_boundary
 
     def add_right_lane_boundary(self, x, y, heading):  # removed s
@@ -85,6 +86,7 @@ class Lane(RoadObject):
         right_boundary.heading = heading
         right_boundary.start_position.x = x
         right_boundary.start_position.y = y
+        right_boundary.s = 0
         return right_boundary
 
     def add_central_curve(self, x, y, heading):  # removed s, removed length
@@ -92,6 +94,7 @@ class Lane(RoadObject):
         central_curve.heading = heading
         central_curve.start_position.x = x
         central_curve.start_position.y = y
+        central_curve.s = 0
         return central_curve
 
     def add_left_sample_assoc(self, s, width):
@@ -138,6 +141,10 @@ class Lane(RoadObject):
         lx, ly = (left_boundary.start_position.x, central_curve.start_position.y)
         r_dist = 0
         rx, ry = (right_boundary.start_position.x, central_curve.start_position.y)
+        left_lane_x = []
+        right_lane_x = []
+        left_lane_y = []
+        right_lane_y = []
 
         for i in range(length):
             if i > 1:
@@ -163,12 +170,18 @@ class Lane(RoadObject):
 
             left_bound_point.x = lp[0]
             left_bound_point.y = lp[1]
+            left_lane_x.append(lp[0])
+            left_lane_y.append(lp[1])
+
             l_dist += math.sqrt(math.pow(lp[0] - lx, 2) + math.pow(lp[1] - ly, 2))
             lx = lp[0]
             ly = lp[1]
 
             right_bound_point.x = rp[0]
             right_bound_point.y = rp[1]
+            right_lane_x.append(rp[0])
+            right_lane_y.append(rp[1])
+
             r_dist += math.sqrt(math.pow(rp[0] - rx, 2) + math.pow(rp[1] - ry, 2))
             rx = rp[0]
             ry = rp[1]
@@ -207,6 +220,7 @@ class Lane(RoadObject):
         right_boundary.length = r_dist
 
         self._polygon = np.array(self.left_poly + list(reversed(self.right_poly)))
+        return left_lane_x, right_lane_x, left_lane_y, right_lane_y
 
     def convert(self, p, p2, distance, use_first=True):
         delta_y = p2.y - p.y
@@ -229,18 +243,37 @@ class Lane(RoadObject):
         rp.append(point.y + (math.sin(right_angle) * distance))
         return lp, rp
 
+    def justGetMeTheLanes(self, points, width):
+        path = LineString(points)
+        p = path.interpolate(0)
+        p2 = path.interpolate(0.5)
+        distance = width / 2.0
+        lp, rp = self.convert(p, p2, distance)
+
+        central_curve = self.add_central_curve(points[0][0], points[0][1], 0)
+        left_boundary = self.add_left_lane_boundary(lp[0], lp[1], 0)
+        right_boundary = self.add_right_lane_boundary(rp[0], rp[1], 0)
+
+        left_lane_x = []
+        right_lane_x = []
+        left_lane_y = []
+        right_lane_y = []
+
+        left_lane_x, right_lane_x, left_lane_y, right_lane_y = self.lane_sampling(points, 3.3, left_boundary, right_boundary, central_curve, False)
+        return left_lane_x, right_lane_x, left_lane_y, right_lane_y
+
     #def add(self, points, junctions, **kwargs):
-    def add(self, points):
+    def add(self, points, speed_limit, lane_turn, lane_type, direction, width):
         self.set_length(points)
-        #self.set_speed_limit(kwargs['speed_limit'])
-        #self.set_turn(kwargs['lane_turn'])
-        #self.set_type(kwargs['lane_type'])
-        #self.set_direction(kwargs['direction'])
+        self.set_speed_limit(speed_limit)
+        self.set_turn(lane_turn)
+        self.set_type(lane_type)
+        self.set_direction(direction)
 
         path = LineString(points)
         p = path.interpolate(0)
         p2 = path.interpolate(0.5)
-        distance = kwargs['width'] / 2.0
+        distance = width / 2.0
         lp, rp = self.convert(p, p2, distance)
 
         #central_curve = self.add_central_curve(points[0][0], points[0][1], kwargs['heading'])
@@ -249,7 +282,14 @@ class Lane(RoadObject):
         central_curve = self.add_central_curve(points[0][0], points[0][1], 0)
         left_boundary = self.add_left_lane_boundary(lp[0], lp[1], 0)
         right_boundary = self.add_right_lane_boundary(rp[0], rp[1], 0)
-        self.lane_sampling(points, 3.3, left_boundary, right_boundary, central_curve, True)
+
+        left_lane_x = []
+        right_lane_x = []
+        left_lane_y = []
+        right_lane_y = []
+
+        left_lane_x, right_lane_x, left_lane_y, right_lane_y = self.lane_sampling(points, 3.3, left_boundary, right_boundary, central_curve, False)
+        return left_lane_x, right_lane_x, left_lane_y, right_lane_y
 
 
 class Road(RoadObject):
