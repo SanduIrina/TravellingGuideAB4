@@ -2277,6 +2277,10 @@ lane {
         length: 1233.7248755636242
       }
     }
+    virtual: true
+    boundary_type {
+      types: CURB
+    }
   }
   right_boundary {
     curve {
@@ -3416,9 +3420,16 @@ lane {
         length: 1205.2799910700105
       }
     }
+    virtual: true
+    boundary_type {
+      types: DOTTED_WHITE
+    }
   }
   length: 1205.9064013123434
   speed_limit: 30.0
+  overlap_id {
+    id: "1"
+  }
   type: CITY_DRIVING
   turn: NO_TURN
   left_sample {
@@ -7950,6 +7961,10 @@ lane {
         length: 1200.7735242238573
       }
     }
+    virtual: true
+    boundary_type {
+      types: DOTTED_WHITE
+    }
   }
   right_boundary {
     curve {
@@ -9089,9 +9104,16 @@ lane {
         length: 1209.8373034798149
       }
     }
+    virtual: true
+    boundary_type {
+      types: CURB
+    }
   }
   length: 1192.177947698911
   speed_limit: 30.0
+  overlap_id {
+    id: "2"
+  }
   type: CITY_DRIVING
   turn: NO_TURN
   left_sample {
