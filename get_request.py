@@ -1,6 +1,6 @@
 import requests
 import json
-import matplotlib as plt
+import matplotlib.pyplot as plt
 
 URL = "https://route.api.here.com/routing/7.2/calculateroute.json"
 app_id = "4vLKaRQKmQntLxTx1xTQ"
@@ -14,6 +14,9 @@ mode = "fastest;car;traffic:disabled"
 PARAMS = {'app_id':app_id,
 			'app_code':app_code,
 			'waypoint0':waypoint0,
+			'waypoint1':waypoint1,
+			'waypoint2':waypoint2,
+			'waypoint3':waypoint3,
 			'waypoint1':waypoint4,
 			'mode':mode,
 			'routeattributes':"shape"}
@@ -30,5 +33,5 @@ for i in range(len(shape)):
 	s[0], s[1] = float(s[0]), float(s[1])
 	new_data.append(s)
 print(new_data)
-
-
+plt.plot(new_data)
+plt.show()
