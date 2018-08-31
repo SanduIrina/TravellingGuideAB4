@@ -2,6 +2,8 @@
 import math
 import numpy as np
 from modules.map.proto import map_road_pb2
+from modules.map.proto import map_lane_pb2
+from modules.map.proto import map_pb2
 from utils import distance
 from shapely.geometry import LineString, Polygon, Point
 
@@ -71,29 +73,32 @@ class Lane(RoadObject):
         boundary_type.types.append(type)
         self.lane.right_boundary.virtual = virtual  # bool
 
-    def add_left_lane_boundary(self, x, y, heading):  # removed s
+    def add_left_lane_boundary(self, x, y, z, heading):  # removed s
         # curve segment params
         left_boundary = self.lane.left_boundary.curve.segment.add()
         left_boundary.heading = heading
         left_boundary.start_position.x = x
         left_boundary.start_position.y = y
+        left_boundary.start_position.z = z
         left_boundary.s = 0
         return left_boundary
 
-    def add_right_lane_boundary(self, x, y, heading):  # removed s
+    def add_right_lane_boundary(self, x, y, z, heading):  # removed s
         # curve segment params
         right_boundary = self.lane.right_boundary.curve.segment.add()
         right_boundary.heading = heading
         right_boundary.start_position.x = x
         right_boundary.start_position.y = y
+        right_boundary.start_position.z = z
         right_boundary.s = 0
         return right_boundary
 
-    def add_central_curve(self, x, y, heading):  # removed s, removed length
+    def add_central_curve(self, x, y, z, heading):  # removed s, removed length
         central_curve = self.lane.central_curve.segment.add()
         central_curve.heading = heading
         central_curve.start_position.x = x
         central_curve.start_position.y = y
+        central_curve.start_position.z = z
         central_curve.s = 0
         return central_curve
 
@@ -170,6 +175,7 @@ class Lane(RoadObject):
 
             left_bound_point.x = lp[0]
             left_bound_point.y = lp[1]
+            left_bound_point.z = points[i][2]
             left_lane_x.append(lp[0])
             left_lane_y.append(lp[1])
 
@@ -179,6 +185,7 @@ class Lane(RoadObject):
 
             right_bound_point.x = rp[0]
             right_bound_point.y = rp[1]
+            right_bound_point.z = points[i][2]
             right_lane_x.append(rp[0])
             right_lane_y.append(rp[1])
 
@@ -189,9 +196,11 @@ class Lane(RoadObject):
             if i < length - 1:
                 central_point.x = p.x
                 central_point.y = p.y
+                central_point.z = points[i][2]
             else:
                 central_point.x = p2.x
                 central_point.y = p2.y
+                central_point.z = points[i-1][2]
             c_dist += math.sqrt(math.pow(central_point.x - cx, 2) + math.pow(central_point.y - cy, 2))
             cx = central_point.x
             cy = central_point.y
@@ -306,16 +315,16 @@ class Lane(RoadObject):
         #central_curve = self.add_central_curve(points[0][0], points[0][1], kwargs['heading'])
         #left_boundary = self.add_left_lane_boundary(lp[0], lp[1], kwargs['heading'])
         #right_boundary = self.add_right_lane_boundary(rp[0], rp[1], kwargs['heading'])
-        central_curve = self.add_central_curve(points[0][0], points[0][1], 0)
-        left_boundary = self.add_left_lane_boundary(lp[0], lp[1], 0)
-        right_boundary = self.add_right_lane_boundary(rp[0], rp[1], 0)
+        central_curve = self.add_central_curve(points[0][0], points[0][1], points[0][2], 0)
+        left_boundary = self.add_left_lane_boundary(lp[0], lp[1], points[0][2], 0)
+        right_boundary = self.add_right_lane_boundary(rp[0], rp[1], points[0][2], 0)
 
         left_lane_x = []
         right_lane_x = []
         left_lane_y = []
         right_lane_y = []
 
-        left_lane_x, right_lane_x, left_lane_y, right_lane_y = self.lane_sampling(points, 3.3, left_boundary, right_boundary, central_curve, False)
+        left_lane_x, right_lane_x, left_lane_y, right_lane_y = self.lane_sampling(points, 3, left_boundary, right_boundary, central_curve, False)
         return left_lane_x, right_lane_x, left_lane_y, right_lane_y
 
 
