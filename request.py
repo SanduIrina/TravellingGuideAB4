@@ -14,6 +14,7 @@ from modules.map.proto import map_pb2
 from modules.map.proto import map_lane_pb2
 from utils import distance
 from shapely.geometry import LineString, Polygon, Point
+from transforms import elevation
 
 from datetime import datetime
 
@@ -50,45 +51,76 @@ clear = pd.decode_polyline(decode)
 print(clear)
 x = []
 y = []
+z = []
 points = []
-for i in range(len(clear)):
-	xi, yi = utm.from_latlon(clear[i][0],clear[i][1])[0], utm.from_latlon(clear[i][0],clear[i][1])[1]
-	if(i > 0):
-		intx = (xi + nxi)/2
-		inty = (yi + nyi)/2
-		x.append(intx)
-		y.append(inty)
-	nxi, nyi = xi, yi
+# for i in range(len(clear)):
+# 	xi, yi = utm.from_latlon(clear[i][0],clear[i][1])[0], utm.from_latlon(clear[i][0],clear[i][1])[1]
+# 	if(i > 0):
+# 		intx = (xi + nxi)/2
+# 		inty = (yi + nyi)/2
+# 		intz = elevation(intx, inty)
+# 		x.append(intx)
+# 		y.append(inty)
+# 		z.append(intz)
+# 	nxi, nyi = xi, yi
+# 	intz = elevation(xi, yi)
+# 	x.append(xi)
+# 	y.append(yi)
+# 	z.append(intz)
+
+xi, yi = utm.from_latlon(clear[0][0],clear[0][1])[0], utm.from_latlon(clear[0][0],clear[0][1])[1]
+zi = elevation(clear[0][0],clear[0][1])
+if zi != None:
+	zi = float(zi)
+else:
+	print(zi)
+	zi = 200
+for i in range(1,len(clear)):
 	x.append(xi)
 	y.append(yi)
+	z.append(zi)
+	xn, yn = utm.from_latlon(clear[i][0],clear[i][1])[0], utm.from_latlon(clear[i][0],clear[i][1])[1]
+	zn = elevation(clear[i][0],clear[i][1])
+	if zn != None:
+		zn = float(zn)
+	else:
+		print(zi)
+		zn = 200
+	xint = (xi + xn)/2
+	yint = (yi + yn)/2
+	zint = (zi + zn)/2
+	x.append(xint)
+	y.append(yint)
+	z.append(zint)
+	xi, yi, zi = xn, yn, zn
 
-newx = []
-newy = []
-for i in range(len(x)):
-	xi, yi = x[i], y[i]
-	if(i > 0):
-		intx = (xi + nxi)/2
-		inty = (yi + nyi)/2
-		newx.append(intx)
-		newy.append(inty)
-	nxi, nyi = xi, yi
-	newx.append(xi)
-	newy.append(yi)
+# newx = []
+# newy = []
+# for i in range(len(x)):
+# 	xi, yi = x[i], y[i]
+# 	if(i > 0):
+# 		intx = (xi + nxi)/2
+# 		inty = (yi + nyi)/2
+# 		newx.append(intx)
+# 		newy.append(inty)
+# 	nxi, nyi = xi, yi
+# 	newx.append(xi)
+# 	newy.append(yi)
 
-nnewx = []
-nnewy = []
-for i in range(len(newx)):
-	xi, yi = newx[i], newy[i]
-	if(i > 0):
-		intx = (xi + nxi)/2
-		inty = (yi + nyi)/2
-		nnewx.append(intx)
-		nnewy.append(inty)
-	nxi, nyi = xi, yi
-	nnewx.append(xi)
-	nnewy.append(yi)
+# nnewx = []
+# nnewy = []
+# for i in range(len(newx)):
+# 	xi, yi = newx[i], newy[i]
+# 	if(i > 0):
+# 		intx = (xi + nxi)/2
+# 		inty = (yi + nyi)/2
+# 		nnewx.append(intx)
+# 		nnewy.append(inty)
+# 	nxi, nyi = xi, yi
+# 	nnewx.append(xi)
+# 	nnewy.append(yi)
 
-points = np.array(list(zip(nnewx,nnewy)))
+points = np.array(list(zip(x,y,z)))
 # plt.plot(newx, newy)
 # plt.show()
 print(points)

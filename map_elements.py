@@ -474,3 +474,13 @@ class Junction(RoadObject):
         for vertex in junc_poly:
             point = self.junction.polygon.point.add()
             point.x, point.y = vertex
+
+    def addJ(self, points):
+        for p in points:
+            point = self.junction.polygon.point.add()
+            point.x, point.y = p[0], p[1]
+            
+            
+            
+            
+            
